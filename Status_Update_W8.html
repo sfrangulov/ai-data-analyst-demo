@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Status Update W8 | Транспортная Модель РК</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #F7F9FC; font-family: 'Segoe UI', 'Helvetica Neue', sans-serif; }
+* { box-sizing: border-box; }
+
+/* Slide system */
+.slides-container { position: relative; width: 100%; height: 100vh; }
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.slide.enter-right { transform: translateX(70px); }
+.slide.enter-left { transform: translateX(-70px); }
+.slide.exit-right { transform: translateX(70px); }
+.slide.exit-left { transform: translateX(-70px); }
+.slide.no-transition { transition: none; }
+.slide-body { flex: 1; overflow: auto; padding: 36px 48px 24px; max-width: 1120px; margin: 0 auto; width: 100%; }
+
+/* Navigation */
+.nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 48px;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+  border-top: 1px solid #E8ECF0;
+}
+.nav-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 18px; border-radius: 8px; border: 1px solid #D0DDE8;
+  background: #fff; color: #1B3A6B; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.nav-btn:hover { background: #1B3A6B; color: #fff; border-color: #1B3A6B; }
+.nav-btn:disabled { opacity: 0.3; cursor: default; background: #fff; color: #1B3A6B; }
+.nav-dots { display: flex; gap: 8px; }
+.nav-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #D0DDE8; border: none; cursor: pointer;
+  transition: all 0.3s;
+}
+.nav-dot.active { background: #F5A623; transform: scale(1.3); }
+
+/* Footer inside slide */
+.slide-footer {
+  padding: 12px 48px; display: flex; justify-content: space-between; align-items: flex-end;
+  border-top: 1px solid #E8ECF0; flex-shrink: 0;
+}
+.footer-text { font-size: 11px; color: #6B7B8D; }
+.am-logo { font-size: 14px; font-weight: 700; color: #1B3A6B; letter-spacing: 0.05em; line-height: 1.2; text-align: right; }
+.am-tagline { font-size: 8px; letter-spacing: 0.15em; color: #6B7B8D; text-transform: uppercase; }
+
+/* Components */
+.tool-card { border: 1px solid #E8ECF0; border-radius: 10px; padding: 18px; background: #fff; }
+.tool-card-highlight { border: 2px solid #F5A623; border-radius: 10px; padding: 18px; background: #fff; }
+.insight-box { background: #F0F4F8; border-left: 3px solid #1B3A6B; border-radius: 0 6px 6px 0; padding: 10px 14px; font-size: 12px; color: #0F2440; margin-top: 8px; line-height: 1.45; }
+.question-icon { width: 32px; height: 32px; border-radius: 50%; background: #1B3A6B; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+.query-card { border: 1px solid #E8ECF0; border-radius: 8px; padding: 14px; background: #fff; }
+.response-card { border: 1px solid #E8ECF0; border-radius: 8px; padding: 14px; background: #F0F4F8; }
+.icon-circle { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.gold-label { color: #F5A623; font-size: 14px; font-weight: 700; }
+.arch-box { border-radius: 8px; padding: 12px 14px; font-size: 12px; }
+.side-box { border-radius: 8px; padding: 10px 14px; font-size: 11px; text-align: center; }
+.node-box { border-radius: 8px; padding: 12px 16px; text-align: center; font-weight: 600; font-size: 13px; }
+
+/* Keyboard hint */
+.key-hint { position: fixed; bottom: 56px; right: 48px; font-size: 10px; color: #B0BEC5; z-index: 101; }
+</style>
+</head>
+<body>
+
+<div class="slides-container" id="slidesContainer">
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 1 -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="slide active" data-slide="0">
+  <div class="slide-body">
+    <div style="border-top: 4px solid #1B3A6B; padding-top: 6px; margin-bottom: 6px;">
+      <h1 style="font-size: 28px; font-weight: 700; color: #1B3A6B; margin: 0;">Подготовленные аналитические инструменты</h1>
+    </div>
+    <p style="font-size: 14px; color: #6B7B8D; margin: 0 0 20px;">Интерактивные модели для сценарного анализа</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+      <!-- Card 1 -->
+      <div class="tool-card" style="border-left: 4px solid #2E6B9E;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;">
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span class="icon-circle" style="background: #E8F0FE; color: #1B3A6B;">🔍</span>
+              <h3 style="font-size: 15px; font-weight: 700; color: #1B3A6B; margin: 0;">Перераспределение нагрузки</h3>
+            </div>
+            <p style="font-size: 12px; color: #0F2440; margin: 0 0 6px; line-height: 1.4;">Можно ли разгрузить перегруженную станцию, перенаправив часть потоков на соседние?</p>
+            <p style="font-size: 10px; color: #6B7B8D; margin: 0; font-style: italic;">Три стратегии распределения · Мгновенный пересчёт · Сравнение до/после</p>
+          </div>
+          <div class="question-icon">?</div>
+        </div>
+        <div class="insight-box">Перенаправление 15% потока снижает пиковую загрузку критичной станции с 98% до 83%. Но в Карагандинском отделении свободной мощности почти нет – нужны инвестиции.*</div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="tool-card" style="border-left: 4px solid #D4922A;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;">
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span class="icon-circle" style="background: #FFF3E0; color: #D4922A;">⚠</span>
+              <h3 style="font-size: 15px; font-weight: 700; color: #1B3A6B; margin: 0;">Стресс-тестирование</h3>
+            </div>
+            <p style="font-size: 12px; color: #0F2440; margin: 0 0 6px; line-height: 1.4;">Как изменения рынка грузов – падение спроса на уголь, рост транзита – влияют на загрузку сети?</p>
+            <p style="font-size: 10px; color: #6B7B8D; margin: 0; font-style: italic;">Одновременные шоки по нескольким грузам · Оценка уязвимости (концентрация грузовой базы)</p>
+          </div>
+          <div class="question-icon">?</div>
+        </div>
+        <div class="insight-box">Мангистауское отделение на 98% зависит от нефти – максимальная уязвимость. Комбинация «уголь −20% + стройматериалы +30%» сохраняет загрузку при лучшей диверсификации.*</div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="tool-card" style="border-left: 4px solid #2E6B9E;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;">
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span class="icon-circle" style="background: #E8F0FE; color: #1B3A6B;">📈</span>
+              <h3 style="font-size: 15px; font-weight: 700; color: #1B3A6B; margin: 0;">Прогноз и планирование расширения</h3>
+            </div>
+            <p style="font-size: 12px; color: #0F2440; margin: 0 0 6px; line-height: 1.4;">Когда и где при текущих темпах роста возникнут проблемы? Что нужно расширять и к какому сроку?</p>
+            <p style="font-size: 10px; color: #6B7B8D; margin: 0; font-style: italic;">Горизонт до 2035 · Корректировка темпов роста · Автоматический подбор расширения мощностей</p>
+          </div>
+          <div class="question-icon">?</div>
+        </div>
+        <div class="insight-box">К 2030 число перегруженных станций вырастет с 24 до ~35. Направление Алматы–Достык (КНР⇔КЗ): все 11 станций на пределе к 2031.*</div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="tool-card-highlight" style="border-left: 4px solid #F5A623;">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;">
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span class="icon-circle" style="background: #FFF3E0; color: #F5A623;">💰</span>
+              <h3 style="font-size: 15px; font-weight: 700; color: #1B3A6B; margin: 0;">Оптимальный инвестиционный план</h3>
+            </div>
+            <p style="font-size: 12px; color: #0F2440; margin: 0 0 6px; line-height: 1.4;">При заданном бюджете — какие станции расширять (или сокращать), в каком порядке, с какой отдачей?</p>
+            <p style="font-size: 10px; color: #6B7B8D; margin: 0; font-style: italic;">Два алгоритма оптимизации · Анализ чувствительности · Сравнение нескольких конфигураций</p>
+          </div>
+          <div class="question-icon">?</div>
+        </div>
+        <div class="insight-box">После 60–70% бюджета каждый следующий миллиард даёт всё меньше отдачи. Сокращение мощностей недогруженных станций даёт потенциальную окупаемость до 4×.*</div>
+      </div>
+
+    </div>
+
+    <p style="font-size: 10px; color: #6B7B8D; margin-top: 16px; line-height: 1.4; font-style: italic;">*На базе реальных грузопотоков КТЖ и оценочных параметров станций. Все результаты демонстрационные – для точных выводов необходимы операционные данные на уровне станций.</p>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-text">Транспортная Модель Республики Казахстан &nbsp;|&nbsp; Оптимизационный анализ</span>
+    <div><div class="am-logo">ALVAREZ & MARSAL</div><div class="am-tagline">Leadership. Action. Results.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 2 -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="slide" data-slide="1">
+  <div class="slide-body">
+    <div style="border-top: 4px solid #1B3A6B; padding-top: 6px; margin-bottom: 6px;">
+      <h1 style="font-size: 28px; font-weight: 700; color: #1B3A6B; margin: 0;">Перспектива: аналитический ассистент</h1>
+    </div>
+    <p style="font-size: 14px; color: #6B7B8D; margin: 0 0 18px;">Естественноязыковой интерфейс к транспортной модели</p>
+
+    <!-- Пользователь -->
+    <div style="border-left: 4px solid #F5A623; background: #fff; border-radius: 0 10px 10px 0; padding: 12px 20px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span class="icon-circle" style="background: #E8F0FE; color: #1B3A6B;">👤</span>
+        <div>
+          <h3 style="font-size: 15px; font-weight: 700; color: #1B3A6B; margin: 0;">Пользователь</h3>
+          <p style="font-size: 12px; color: #6B7B8D; margin: 3px 0 0;">Формулирует вопрос или задачу на естественном языке</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="gold-label" style="margin-bottom: 6px; font-size: 13px;">Примеры запросов</div>
+    <div style="text-align: center; color: #F5A623; font-size: 18px; margin-bottom: 6px;">↓</div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 6px;">
+      <div class="query-card">
+        <p style="font-size: 12px; color: #1B3A6B; font-weight: 600; margin: 0 0 8px; line-height: 1.35;">«Что произойдёт с сетью, если транзит через Достык вырастет на 40%?»</p>
+        <p style="font-size: 11px; color: #27AE60; margin: 0;">→ Стресс-тест: влияние на загрузку, критические станции</p>
+      </div>
+      <div class="query-card">
+        <p style="font-size: 12px; color: #1B3A6B; font-weight: 600; margin: 0 0 8px; line-height: 1.35;">«Какой минимальный бюджет, чтобы к 2030 году в сети было не более 20 перегруженных станций?»</p>
+        <p style="font-size: 11px; color: #27AE60; margin: 0;">→ Прогноз + инвестиционная оптимизация: план и ROI</p>
+      </div>
+      <div class="query-card">
+        <p style="font-size: 12px; color: #1B3A6B; font-weight: 600; margin: 0 0 8px; line-height: 1.35;">«Подготовь справку по загрузке Карагандинского отделения и как можно повысить его эффективность»</p>
+        <p style="font-size: 11px; color: #27AE60; margin: 0;">→ Диагностика + прогноз: отчёт с визуализациями</p>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #F5A623; font-size: 18px; margin-bottom: 6px;">↓</div>
+
+    <!-- Ассистент + Инструменты -->
+    <div style="display: grid; grid-template-columns: 1.2fr auto 1fr; gap: 12px; align-items: center; margin-bottom: 6px;">
+      <div style="border-left: 4px solid #F5A623; background: #fff; border-radius: 0 10px 10px 0; padding: 14px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+          <span class="icon-circle" style="background: #E8F0FE; color: #1B3A6B;">🧠</span>
+          <h3 style="font-size: 15px; font-weight: 700; color: #1B3A6B; margin: 0;">Аналитический ассистент</h3>
+        </div>
+        <p style="font-size: 12px; color: #6B7B8D; margin: 0;">Понимает запрос, выбирает нужные инструменты, комбинирует результаты</p>
+      </div>
+      <div style="font-size: 24px; color: #1B3A6B;">⇐</div>
+      <div style="background: #1B3A6B; border-radius: 10px; padding: 14px 20px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+          <span style="font-size: 13px;">⚙️</span>
+          <h3 style="font-size: 15px; font-weight: 700; color: #F5A623; margin: 0;">Инструменты и данные</h3>
+        </div>
+        <p style="font-size: 11px; color: #8BAFD4; margin: 0;">Оптимизационные модели · Транспортные данные · Бенчмарки · Статистика · Любые другие инструменты</p>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #F5A623; font-size: 18px; margin-bottom: 6px;">↓</div>
+
+    <div class="gold-label" style="margin-bottom: 8px; font-size: 13px;">Пример ответа ассистента</div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+      <div class="response-card">
+        <p style="font-size: 11px; color: #0F2440; margin: 0; line-height: 1.45;">При росте транзита через Достык на 40% утилизация Алматинского отделения (НОД 7) вырастет с 78% до 94% — все 11 станций перейдут в критическую зону уже к 2028. Рекомендуется расширение мощностей на 3 ключевых станциях коридора.</p>
+      </div>
+      <div class="response-card">
+        <p style="font-size: 11px; color: #0F2440; margin: 0; line-height: 1.45;">Для снижения числа перегруженных станций с прогнозных 35 до 20 к 2030 году минимальный бюджет составляет ~12 усл. млрд ₸. Оптимальный план включает расширение 8 станций в 4 отделениях.</p>
+      </div>
+      <div class="response-card">
+        <p style="font-size: 11px; color: #0F2440; margin: 0; line-height: 1.45;">Сформирован отчёт: 8 из 11 станций отделения перегружены, резерв сети минимален. Перераспределение потоков неэффективно – желательно расширение мощностей на 3 приоритетных станциях.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-text">Транспортная Модель Республики Казахстан &nbsp;|&nbsp; Оптимизационный анализ</span>
+    <div><div class="am-logo">ALVAREZ & MARSAL</div><div class="am-tagline">Leadership. Action. Results.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- SLIDE 3 -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="slide" data-slide="2">
+  <div class="slide-body">
+    <div style="border-top: 4px solid #1B3A6B; padding-top: 6px; margin-bottom: 20px;">
+      <h1 style="font-size: 28px; font-weight: 700; color: #1B3A6B; margin: 0;">Верхнеуровневая архитектура AI-платформы</h1>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+
+      <!-- Пользователь -->
+      <div style="display: flex; justify-content: center;">
+        <div class="node-box" style="background: #1B3A6B; color: #fff; min-width: 220px;">Пользователь</div>
+      </div>
+
+      <div style="text-align: center; color: #B0BEC5; font-size: 16px; line-height: 1;">│</div>
+
+      <!-- Фронтенд -->
+      <div style="background: rgba(46,107,158,0.07); border: 1px solid #D0DDE8; border-radius: 10px; padding: 12px 20px; text-align: center;">
+        <div style="font-size: 13px; font-weight: 700; color: #27AE60; margin-bottom: 2px;">Фронтенд</div>
+        <div style="font-size: 11px; color: #6B7B8D;">Чат, панели визуализации, каталог данных, настройки</div>
+      </div>
+
+      <div style="text-align: center; color: #B0BEC5; font-size: 16px; line-height: 1;">│</div>
+
+      <!-- Бэкенд + side -->
+      <div style="display: grid; grid-template-columns: 1fr 170px; gap: 10px;">
+        <div style="background: rgba(15,36,64,0.03); border: 1px solid #D0DDE8; border-radius: 10px; padding: 14px;">
+          <div style="font-size: 10px; font-weight: 700; color: #E74C3C; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px;">Бэкенд</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+            <div class="node-box" style="background: #1B3A6B; color: #fff; font-size: 12px; padding: 10px;">Авторизация</div>
+            <div class="node-box" style="background: #1B3A6B; color: #fff; font-size: 12px; padding: 10px;">API-маршруты</div>
+            <div class="node-box" style="background: #1B3A6B; color: #fff; font-size: 12px; padding: 10px;">AI-Агенты</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="side-box" style="background: #2E6B9E; color: #fff; font-weight: 600;">LLM-модели<br><span style="font-weight: 400; font-size: 10px; color: #C8DDEF;">Claude / Gemini</span></div>
+          <div class="side-box" style="background: #F5A623; color: #0F2440; font-weight: 600;">База данных</div>
+        </div>
+      </div>
+
+      <div style="text-align: center; color: #B0BEC5; font-size: 16px; line-height: 1;">│</div>
+
+      <!-- MCP + side -->
+      <div style="display: grid; grid-template-columns: 1fr 170px; gap: 10px;">
+        <div style="background: rgba(15,36,64,0.03); border: 1px solid #D0DDE8; border-radius: 10px; padding: 14px;">
+          <div style="font-size: 10px; font-weight: 700; color: #E74C3C; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px;">MCP-сервер (инструменты)</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px;">
+            <div class="arch-box" style="background: #1B3A6B; color: #fff; padding: 10px 12px;">
+              <div style="font-weight: 700; font-size: 12px; margin-bottom: 4px;">Доступ к данным</div>
+              <div style="font-size: 10px; color: #8BAFD4; line-height: 1.4;">Листинг файлов<br>Просмотр файла<br>Схема данных<br>Обзор датасетов<br>Анализ Excel</div>
+            </div>
+            <div class="arch-box" style="background: #1B3A6B; color: #fff; padding: 10px 12px;">
+              <div style="font-weight: 700; font-size: 12px; margin-bottom: 4px;">Аналитика и код</div>
+              <div style="font-size: 10px; color: #8BAFD4; line-height: 1.4;">SQL-запросы<br>Профилирование<br>Сводные таблицы<br>Запуск кода<br>Конвертация валют</div>
+            </div>
+            <div class="arch-box" style="background: #1B3A6B; color: #fff; padding: 10px 12px;">
+              <div style="font-weight: 700; font-size: 12px; margin-bottom: 4px;">Вывод</div>
+              <div style="font-size: 10px; color: #8BAFD4; line-height: 1.4;">Графики<br>Диаграммы<br>Панели визуализации<br>Запись файлов</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+            <div class="arch-box" style="background: rgba(27,58,107,0.05); border: 1px solid #D0DDE8; padding: 10px 12px;">
+              <div style="font-weight: 700; color: #1B3A6B; font-size: 11px; margin-bottom: 4px;">Библиотека знаний</div>
+              <div style="font-size: 10px; color: #6B7B8D; line-height: 1.4;">SQL для DuckDB<br>Исследование данных<br>Валидация данных<br>Статистический анализ</div>
+            </div>
+            <div class="arch-box" style="background: rgba(27,58,107,0.05); border: 1px solid #D0DDE8; padding: 10px 12px;">
+              <div style="font-weight: 700; color: #1B3A6B; font-size: 11px; margin-bottom: 4px;">&nbsp;</div>
+              <div style="font-size: 10px; color: #6B7B8D; line-height: 1.4;">Принципы визуализации<br>Графики<br>Диаграммы<br>Паттерны панелей</div>
+            </div>
+            <div class="arch-box" style="background: rgba(27,58,107,0.05); border: 1px solid #D0DDE8; padding: 10px 12px;">
+              <div style="font-weight: 700; color: #1B3A6B; font-size: 11px; margin-bottom: 4px;">Модели</div>
+              <div style="font-size: 10px; color: #6B7B8D; line-height: 1.4;">Перераспределение нагрузки<br>Прогноз и планирование расширения<br>Стресс-тестирование<br>Оптимальный инвест. план</div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="side-box" style="background: #2E6B9E; color: #fff; font-weight: 600;">Инструмент работы с данными<br><span style="font-weight: 400; font-size: 10px; color: #C8DDEF;">(DuckDB)</span></div>
+          <div class="side-box" style="background: #2E6B9E; color: #fff; font-weight: 600;">Песочница <span style="font-weight: 400; font-size: 10px; color: #C8DDEF;">(Docker)</span></div>
+          <div class="side-box" style="background: #6B4C3B; color: #fff; font-weight: 600;">Файлы данных <span style="font-weight: 400; font-size: 10px; color: #D4B896;">CSV, Parquet, XLSX</span></div>
+          <div class="side-box" style="background: #5B2C3B; color: #fff; font-weight: 600;">Внешние источники <span style="font-weight: 400; font-size: 10px; color: #D4A0B0;">БД, REST API, Snowflake…</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center; margin-top: 14px; font-size: 11px; color: #6B7B8D;">2</div>
+  </div>
+  <div class="slide-footer">
+    <span class="footer-text">Транспортная Модель Республики Казахстан &nbsp;|&nbsp; Оптимизационный анализ</span>
+    <div><div class="am-logo">ALVAREZ & MARSAL</div><div class="am-tagline">Leadership. Action. Results.</div></div>
+  </div>
+</div>
+
+</div><!-- /slides-container -->
+
+<!-- Navigation bar -->
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)" disabled>← Назад</button>
+  <div class="nav-dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="go(1)">Далее →</button>
+</div>
+<div class="key-hint">← → или пробел для навигации</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const dots = document.getElementById('dots');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+let current = 0;
+let animating = false;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dots.appendChild(d);
+});
+
+function goTo(idx) {
+  if (idx === current || idx < 0 || idx >= slides.length || animating) return;
+  animating = true;
+  const forward = idx > current;
+  const old = slides[current];
+  const next = slides[idx];
+
+  // 1. Animate old slide out
+  old.classList.add(forward ? 'exit-left' : 'exit-right');
+  old.classList.remove('active');
+
+  // 2. Place new slide at entry position instantly (no transition)
+  next.classList.add('no-transition', forward ? 'enter-right' : 'enter-left');
+
+  // 3. Force reflow, then animate new slide in
+  void next.offsetWidth;
+  next.classList.remove('no-transition', 'enter-right', 'enter-left');
+  next.classList.add('active');
+
+  current = idx;
+  updateNav();
+
+  // 4. Clean up old slide after transition ends
+  setTimeout(() => {
+    old.classList.remove('exit-left', 'exit-right');
+    animating = false;
+  }, 450);
+}
+
+function go(dir) { goTo(current + dir); }
+
+function updateNav() {
+  prevBtn.disabled = current === 0;
+  nextBtn.disabled = current === slides.length - 1;
+  dots.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+});
+</script>
+
+</body>
+</html>
