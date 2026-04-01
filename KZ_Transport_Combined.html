@@ -8,46 +8,26 @@
 html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #F7F9FC; font-family: 'Segoe UI', 'Helvetica Neue', sans-serif; }
 * { box-sizing: border-box; }
 
-/* ── Top nav ── */
 .top-nav {
   position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
   z-index: 9999;
-  display: flex; align-items: center; gap: 0;
+  display: flex; align-items: center; gap: 2px;
   background: #fff; border-radius: 10px;
   box-shadow: 0 2px 12px rgba(15,36,64,0.10), 0 0 0 1px rgba(0,0,0,0.04);
   padding: 3px;
 }
 .top-nav-tab {
-  padding: 7px 20px; border-radius: 8px; border: none;
-  font-size: 12px; font-weight: 600; cursor: pointer;
+  padding: 7px 16px; border-radius: 8px; border: none;
+  font-size: 11px; font-weight: 600; cursor: pointer;
   transition: all 0.2s; white-space: nowrap;
   background: transparent; color: #6B7B8D;
 }
 .top-nav-tab:hover { background: #F0F2F5; color: #1B3A6B; }
 .top-nav-tab.active { background: #1B3A6B; color: #fff; }
+.top-nav-sep {
+  width: 1px; height: 20px; background: #E8ECF0; margin: 0 2px; flex-shrink: 0;
+}
 
-/* ── Slide controls (inside top-nav) ── */
-.slide-controls {
-  display: flex; align-items: center; gap: 6px;
-  margin-left: 4px; padding-left: 8px;
-  border-left: 1px solid #E8ECF0;
-  opacity: 0; pointer-events: none; max-width: 0; overflow: hidden;
-  transition: opacity 0.3s, max-width 0.3s;
-}
-.slide-controls.visible {
-  opacity: 1; pointer-events: auto; max-width: 300px;
-}
-.sc-btn {
-  width: 26px; height: 26px; border-radius: 6px; border: 1px solid #D0DDE8;
-  background: #fff; color: #1B3A6B; font-size: 13px; font-weight: 600;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s; padding: 0;
-}
-.sc-btn:hover { background: #1B3A6B; color: #fff; border-color: #1B3A6B; }
-.sc-btn:disabled { opacity: 0.25; cursor: default; background: #fff; color: #1B3A6B; }
-.sc-slide-name { font-size: 11px; color: #1B3A6B; font-weight: 500; white-space: nowrap; }
-
-/* ── Views ── */
 .view-panel {
   position: absolute; inset: 0;
   opacity: 0; pointer-events: none;
@@ -59,71 +39,71 @@ html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: 
 </head>
 <body>
 
-<!-- Navigation -->
 <div class="top-nav" id="topNav">
-  <button class="top-nav-tab active" data-view="dashboard" onclick="switchView('dashboard')">Обзор транспортной отрасли</button>
-  <button class="top-nav-tab" data-view="slides" onclick="switchView('slides')">Оптимизационный анализ</button>
-  <div class="slide-controls" id="slideControls">
-    <button class="sc-btn" id="scPrev" onclick="slideCmd('slideGo',{dir:-1})">&#8249;</button>
-    <span class="sc-slide-name" id="scName"></span>
-    <button class="sc-btn" id="scNext" onclick="slideCmd('slideGo',{dir:1})">&#8250;</button>
-  </div>
+  <button class="top-nav-tab active" data-view="dashboard" onclick="switchTo('dashboard')">Обзор транспортной отрасли</button>
+  <div class="top-nav-sep"></div>
+  <button class="top-nav-tab" data-slide="0" onclick="switchTo('slide',0)">Аналитические инструменты</button>
+  <button class="top-nav-tab" data-slide="1" onclick="switchTo('slide',1)">Аналитический ассистент</button>
+  <button class="top-nav-tab" data-slide="2" onclick="switchTo('slide',2)">Архитектура AI-платформы</button>
 </div>
 
-<!-- Dashboard -->
 <div class="view-panel active" id="view-dashboard">
-  <iframe src="KZ_Transport_Dashboard_v2.html" id="dashboardFrame"></iframe>
+  <iframe src="KZ_Transport_Dashboard_v2.html"></iframe>
 </div>
-
-<!-- Slides -->
 <div class="view-panel" id="view-slides">
   <iframe src="Status_Update_W8.html" id="slidesFrame"></iframe>
 </div>
 
 <script>
-let activeView = 'dashboard';
+var activeView = 'dashboard';
+var currentSlide = 0;
 
-function switchView(view) {
-  activeView = view;
-  document.querySelectorAll('.view-panel').forEach(function(p) { p.classList.remove('active'); });
-  document.querySelectorAll('.top-nav-tab').forEach(function(t) { t.classList.remove('active'); });
-  document.getElementById('view-' + view).classList.add('active');
-  document.querySelector('[data-view="' + view + '"]').classList.add('active');
-  document.getElementById('slideControls').classList.toggle('visible', view === 'slides');
-  if (view === 'slides') slideCmd('slideGetState');
+function switchTo(view, slideIdx) {
+  // Update panels
+  document.getElementById('view-dashboard').classList.toggle('active', view === 'dashboard');
+  document.getElementById('view-slides').classList.toggle('active', view !== 'dashboard');
+  activeView = view === 'dashboard' ? 'dashboard' : 'slides';
+
+  // Navigate slide if needed
+  if (view === 'slide' && typeof slideIdx === 'number') {
+    currentSlide = slideIdx;
+    var frame = document.getElementById('slidesFrame');
+    frame.contentWindow.postMessage({ type: 'slideGoTo', idx: slideIdx }, '*');
+  }
+
+  // Update tab highlights
+  updateTabs(view === 'dashboard' ? -1 : slideIdx);
 }
 
-function slideCmd(type, extra) {
-  var frame = document.getElementById('slidesFrame');
-  var msg = Object.assign({ type: type }, extra || {});
-  frame.contentWindow.postMessage(msg, '*');
+function updateTabs(slideIdx) {
+  var tabs = document.querySelectorAll('.top-nav-tab');
+  tabs.forEach(function(t) { t.classList.remove('active'); });
+  if (slideIdx === -1 || slideIdx === undefined) {
+    document.querySelector('[data-view="dashboard"]').classList.add('active');
+  } else {
+    var st = document.querySelector('[data-slide="' + slideIdx + '"]');
+    if (st) st.classList.add('active');
+  }
 }
 
-// Listen for state updates from slides iframe
+// Listen for slide changes from iframe (arrow keys inside iframe)
 window.addEventListener('message', function(e) {
   if (e.data && e.data.type === 'slideChange') {
-    updateSlideControls(e.data.current, e.data.total);
+    currentSlide = e.data.current;
+    if (activeView === 'slides') updateTabs(currentSlide);
   }
 });
 
-var slideNames = [
-  'Аналитические инструменты',
-  'Аналитический ассистент',
-  'Архитектура AI-платформы'
-];
-
-function updateSlideControls(current, total) {
-  document.getElementById('scName').textContent = slideNames[current] || ((current + 1) + '/' + total);
-  document.getElementById('scPrev').disabled = current === 0;
-  document.getElementById('scNext').disabled = current === total - 1;
-}
-
 document.addEventListener('keydown', function(e) {
-  if (e.key === '1') switchView('dashboard');
-  if (e.key === '2') switchView('slides');
   if (activeView === 'slides') {
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); slideCmd('slideGo', { dir: 1 }); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); slideCmd('slideGo', { dir: -1 }); }
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      document.getElementById('slidesFrame').contentWindow.postMessage({ type: 'slideGo', dir: 1 }, '*');
+    }
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      document.getElementById('slidesFrame').contentWindow.postMessage({ type: 'slideGo', dir: -1 }, '*');
+    }
   }
 });
 </script>
